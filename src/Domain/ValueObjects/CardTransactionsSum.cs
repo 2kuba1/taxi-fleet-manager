@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Domain.Common;
 
 namespace Domain.ValueObjects;
@@ -23,6 +21,6 @@ public record CardTransactionsSum : ValueObject
     
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new System.NotImplementedException();
+        yield return Value;
     }
 }

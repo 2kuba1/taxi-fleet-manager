@@ -1,14 +1,8 @@
-using System;
 using System.Net;
 
 namespace Domain.Common;
 
-public abstract class BaseException : Exception
+public abstract class BaseException(string message) : Exception(message)
 {
-    public BaseException(string message) : base(message)
-    {
-        
-    }
-
-    public HttpStatusCode StatusCode { get; set; }
+    public abstract HttpStatusCode StatusCode { get; }
 }
