@@ -13,7 +13,7 @@ public record LicensePlate : ValueObject
 
     public static LicensePlate Create(string value)
     {
-        if(string.IsNullOrEmpty(value) || value.Length < 4)
+        if(string.IsNullOrEmpty(value) || value.Length < 3 || value.Length > 9)
             throw new ArgumentException("License plate number is invalid");
         
         var formattedValue = value.ToUpper().Replace(" ", "");
