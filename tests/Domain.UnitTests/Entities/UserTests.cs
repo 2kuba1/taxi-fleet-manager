@@ -12,7 +12,6 @@ public class UserTests
         //Arrange
         string expectedEmail = "test@test.com";
         string expectedLogin = "Login";
-        string expectedPassword = "Password123";
         string expectedPhone = "123456789";
         string expectedAreaCode = "48";
         string expectedFirstName = "Test";
@@ -27,7 +26,6 @@ public class UserTests
             Guid.NewGuid(),
             expectedEmail,
             expectedLogin,
-            expectedPassword,
             expectedPhone,
             expectedAreaCode,
             expectedFirstName,
@@ -59,7 +57,6 @@ public class UserTests
             Guid.NewGuid(),
             invalidEmail,
             "Driver1",
-            "Password123)(",
             "123456789",
             "48",
             "Test",
@@ -80,7 +77,6 @@ public class UserTests
             Guid.NewGuid(),
             "test@test.com",
             invalidLogin,
-            "Password123)(",
             "123456789",
             "48",
             "Test",

@@ -8,7 +8,6 @@ public class User : BaseEntity
 {
     public string Email { get; private set; }
     public string Login { get; private set; }
-    public string Password { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -26,13 +25,12 @@ public class User : BaseEntity
 
     protected User(){}
 
-    private User(Guid id, string email, string login, string password, string phoneNumber, string areaCode, string firstName,
+    private User(Guid id, string email, string login, string phoneNumber, string areaCode, string firstName,
         string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
     {
         Id = id;
         Email = email;
         Login = login;
-        Password = password;
         PhoneNumber = PhoneNumber.Create(phoneNumber, areaCode);
         FirstName = firstName;
         LastName = lastName;
@@ -49,7 +47,6 @@ public class User : BaseEntity
         /// <param name="id">The user's unique identification Guid.</param>
         /// <param name="email">The user's email address used for communication and identification. Cannot be empty and must contain the '@' character.</param>
         /// <param name="login">The unique login credential for the user. Cannot be empty and must be between 3 and 8 characters long.</param>
-        /// <param name="password">The user's password credential. Cannot be empty.</param>
         /// <param name="phoneNumber">The 9-digit phone number of the user.</param>
         /// <param name="areaCode">The country calling code (e.g., "48").</param>
         /// <param name="firstName">The first name of the user. Cannot be empty.</param>
@@ -65,12 +62,13 @@ public class User : BaseEntity
         /// <item><description>The <paramref name="id"/> is empty.</description></item>
         /// <item><description>The <paramref name="email"/> is null, empty, or does not contain an '@' character.</description></item>
         /// <item><description>The <paramref name="login"/> is null, empty, or its length is outside the 3-8 character range.</description></item>
-        /// <item><description>The <paramref name="password"/>, <paramref name="firstName"/>, or <paramref name="lastName"/> is null or whitespace.</description></item>
         /// <item><description>The underlying phone number validation within <see cref="PhoneNumber"/> fails due to an invalid format.</description></item>
         /// </list>
         /// </exception>
     #endregion
-    public static User Create(Guid id, string email, string login, string password, string phoneNumber, string areaCode,
+        
+    public static User Create(Guid id, string email, string login, string phoneNumber, string areaCode,
+
         string firstName,
         string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
     {
@@ -83,9 +81,6 @@ public class User : BaseEntity
         if (string.IsNullOrWhiteSpace(login) || login.Length < 3 || login.Length > 8)
             throw new ArgumentException("Login cannot be empty");
 
-        if (string.IsNullOrWhiteSpace(password))
-            throw new ArgumentException("Password cannot be empty");
-
         if (string.IsNullOrWhiteSpace(firstName))
             throw new ArgumentException("First name cannot be empty");
 
@@ -93,6 +88,6 @@ public class User : BaseEntity
             throw new ArgumentException("Last name cannot be empty");
         
 
-        return new User(id, email, login, password, phoneNumber, areaCode, firstName, lastName, kilometerRate, contractType, roleId, teamId);
+        return new User(id, email, login, phoneNumber, areaCode, firstName, lastName, kilometerRate, contractType, roleId, teamId);
     }
 }
