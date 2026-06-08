@@ -11,6 +11,8 @@ public record CardTransactionsSum : ValueObject
         Value = value;
     }
 
+    protected CardTransactionsSum(){}
+    
     public static CardTransactionsSum Create(float value)
     {
         if(value < 0)

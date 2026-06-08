@@ -11,6 +11,8 @@ public record Vin : ValueObject
         Value = value;
     }
 
+    protected Vin(){}
+    
     public static Vin Create(string value)
     {
         if(string.IsNullOrEmpty(value) || value.Length != 17)

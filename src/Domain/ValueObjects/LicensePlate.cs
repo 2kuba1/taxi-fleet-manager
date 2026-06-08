@@ -11,6 +11,8 @@ public record LicensePlate : ValueObject
         Value = value;
     }
 
+    protected LicensePlate(){}
+    
     public static LicensePlate Create(string value)
     {
         if(string.IsNullOrEmpty(value) || value.Length < 3 || value.Length > 9)

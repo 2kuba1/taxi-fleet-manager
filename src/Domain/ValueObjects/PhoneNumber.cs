@@ -13,6 +13,8 @@ public record PhoneNumber : ValueObject
         AreaCode = areaCode;
     }
 
+    protected PhoneNumber(){}
+    
     public static PhoneNumber Create(string number, string areaCode)
     {
         if (string.IsNullOrWhiteSpace(number) || string.IsNullOrWhiteSpace(areaCode))

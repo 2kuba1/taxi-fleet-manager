@@ -24,6 +24,7 @@ public class UserTests
        
         //Act
         var user = User.Create(
+            Guid.NewGuid(),
             expectedEmail,
             expectedLogin,
             expectedPassword,
@@ -55,6 +56,7 @@ public class UserTests
     public void Create_WithInvalidEmail_ShouldThrowArgumentException(string invalidEmail)
     {
         var user = () => User.Create(
+            Guid.NewGuid(),
             invalidEmail,
             "Driver1",
             "Password123)(",
@@ -75,6 +77,7 @@ public class UserTests
     public void Create_WithInvalidLogin_ShouldThrowArgumentException(string invalidLogin)
     {
         Assert.Throws<ArgumentException>(() => User.Create(
+            Guid.NewGuid(),
             "test@test.com",
             invalidLogin,
             "Password123)(",

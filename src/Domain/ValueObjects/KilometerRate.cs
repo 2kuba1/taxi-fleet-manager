@@ -11,6 +11,8 @@ public record KilometerRate : ValueObject
         Value = value;
     }
 
+    protected KilometerRate(){}
+    
     public static KilometerRate Create(float value)
     {
         if(value < 0)
