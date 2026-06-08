@@ -12,7 +12,6 @@ public class UserTests
         //Arrange
         string expectedEmail = "test@test.com";
         string expectedLogin = "Login";
-        string expectedPassword = "Password123";
         string expectedPhone = "123456789";
         string expectedAreaCode = "48";
         string expectedFirstName = "Test";
@@ -26,7 +25,6 @@ public class UserTests
         var user = User.Create(
             expectedEmail,
             expectedLogin,
-            expectedPassword,
             expectedPhone,
             expectedAreaCode,
             expectedFirstName,
@@ -57,7 +55,6 @@ public class UserTests
         var user = () => User.Create(
             invalidEmail,
             "Driver1",
-            "Password123)(",
             "123456789",
             "48",
             "Test",
@@ -77,7 +74,6 @@ public class UserTests
         Assert.Throws<ArgumentException>(() => User.Create(
             "test@test.com",
             invalidLogin,
-            "Password123)(",
             "123456789",
             "48",
             "Test",
