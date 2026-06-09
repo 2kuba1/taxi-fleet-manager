@@ -75,6 +75,23 @@ namespace Persistence.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Teams",
+                schema: "business",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CarFleetId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 schema: "identity",
                 columns: table => new
@@ -204,78 +221,13 @@ namespace Persistence.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarFleets", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cars",
-                schema: "business",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Brand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Model = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LicensePlate = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    VinNumber = table.Column<string>(type: "character(17)", fixedLength: true, maxLength: 17, nullable: false),
-                    InspectionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    InsuranceRenewalDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CarFleetId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cars_CarFleets_CarFleetId",
-                        column: x => x.CarFleetId,
+                        name: "FK_CarFleets_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalSchema: "business",
-                        principalTable: "CarFleets",
+                        principalTable: "Teams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShiftReports",
-                schema: "business",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OdometerPhotoUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: false),
-                    KilometersDriven = table.Column<int>(type: "integer", nullable: false),
-                    CardTransactionsSum = table.Column<float>(type: "real", nullable: false),
-                    ReportStatus = table.Column<string>(type: "text", nullable: false),
-                    CarId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShiftReports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShiftReports_Cars_CarId",
-                        column: x => x.CarId,
-                        principalSchema: "business",
-                        principalTable: "Cars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teams",
-                schema: "business",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CarFleetId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.Id);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +238,6 @@ namespace Persistence.Database.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Login = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     PhoneAreaCode = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -325,6 +276,34 @@ namespace Persistence.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cars",
+                schema: "business",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Brand = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Model = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LicensePlate = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    VinNumber = table.Column<string>(type: "character(17)", fixedLength: true, maxLength: 17, nullable: false),
+                    InspectionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    InsuranceRenewalDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CarFleetId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_CarFleets_CarFleetId",
+                        column: x => x.CarFleetId,
+                        principalSchema: "business",
+                        principalTable: "CarFleets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkShifts",
                 schema: "business",
                 columns: table => new
@@ -341,6 +320,40 @@ namespace Persistence.Database.Migrations
                     table.PrimaryKey("PK_WorkShifts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_WorkShifts_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "business",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShiftReports",
+                schema: "business",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OdometerPhotoUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: false),
+                    KilometersDriven = table.Column<int>(type: "integer", nullable: false),
+                    CardTransactionsSum = table.Column<float>(type: "real", nullable: false),
+                    ReportStatus = table.Column<string>(type: "text", nullable: false),
+                    CarId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShiftReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShiftReports_Cars_CarId",
+                        column: x => x.CarId,
+                        principalSchema: "business",
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShiftReports_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "business",
                         principalTable: "Users",
@@ -425,13 +438,6 @@ namespace Persistence.Database.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teams_OwnerId",
-                schema: "business",
-                table: "Teams",
-                column: "OwnerId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 schema: "business",
                 table: "Users",
@@ -448,51 +454,11 @@ namespace Persistence.Database.Migrations
                 schema: "business",
                 table: "WorkShifts",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_CarFleets_Teams_TeamId",
-                schema: "business",
-                table: "CarFleets",
-                column: "TeamId",
-                principalSchema: "business",
-                principalTable: "Teams",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ShiftReports_Users_UserId",
-                schema: "business",
-                table: "ShiftReports",
-                column: "UserId",
-                principalSchema: "business",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Teams_Users_OwnerId",
-                schema: "business",
-                table: "Teams",
-                column: "OwnerId",
-                principalSchema: "business",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_AspNetUsers_Id",
-                schema: "business",
-                table: "Users");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_Teams_TeamId",
-                schema: "business",
-                table: "Users");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims",
                 schema: "identity");
@@ -530,6 +496,10 @@ namespace Persistence.Database.Migrations
                 schema: "business");
 
             migrationBuilder.DropTable(
+                name: "Users",
+                schema: "business");
+
+            migrationBuilder.DropTable(
                 name: "CarFleets",
                 schema: "business");
 
@@ -538,15 +508,11 @@ namespace Persistence.Database.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
-                name: "Teams",
-                schema: "business");
-
-            migrationBuilder.DropTable(
-                name: "Users",
-                schema: "business");
-
-            migrationBuilder.DropTable(
                 name: "Roles",
+                schema: "business");
+
+            migrationBuilder.DropTable(
+                name: "Teams",
                 schema: "business");
         }
     }

@@ -26,7 +26,7 @@ public class User : BaseEntity
     protected User(){}
 
     private User(Guid id, string email, string login, string phoneNumber, string areaCode, string firstName,
-        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
+        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid? teamId)
     {
         Id = id;
         Email = email;
@@ -67,10 +67,8 @@ public class User : BaseEntity
         /// </exception>
     #endregion
         
-    public static User Create(Guid id, string email, string login, string phoneNumber, string areaCode,
-
-        string firstName,
-        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
+    public static User Create(Guid id, string email, string login, string phoneNumber, string areaCode, string firstName, 
+            string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid? teamId = null)
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty");
@@ -89,5 +87,13 @@ public class User : BaseEntity
         
 
         return new User(id, email, login, phoneNumber, areaCode, firstName, lastName, kilometerRate, contractType, roleId, teamId);
+    }
+        
+    public void AssignTeam(Guid teamId)
+    {
+        if (teamId == Guid.Empty)
+            throw new ArgumentException();
+
+        TeamId = teamId;
     }
 }

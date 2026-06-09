@@ -6,7 +6,6 @@ public class Team : BaseEntity
 {
     public string Name { get; private set; }
     public Guid OwnerId { get; private set; }
-    public User Owner { get; set; }
     
     public Guid CarFleetId { get; private set; }
     public CarFleet CarFleet { get; set; }
@@ -17,6 +16,13 @@ public class Team : BaseEntity
 
     private Team(string name, Guid ownerId)
     {
+        Name = name;
+        OwnerId = ownerId;
+    }
+    
+    private Team(Guid id, string name, Guid ownerId)
+    {
+        Id = id;
         Name = name;
         OwnerId = ownerId;
     }
@@ -46,6 +52,17 @@ public class Team : BaseEntity
         
         return new Team(name, ownerId);
     }
+        
+    public static Team Create(Guid id, string name, Guid ownerId)
+    {
+        if(string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Team name cannot be empty");
+        
+        if(Guid.Empty == ownerId)
+            throw new ArgumentException("Owner id cannot be empty");
+        
+        return new Team(id, name, ownerId);
+    }
 
     #region AssignCarFleetSummaryRegion
         /// <summary>
@@ -58,5 +75,11 @@ public class Team : BaseEntity
     {
         CarFleet = carFleet ?? throw new ArgumentNullException(nameof(carFleet));
         CarFleetId = carFleet.Id;
+    }
+        
+    public void ChangeOwner(Guid ownerId)
+    {
+        if (ownerId == Guid.Empty) throw new ArgumentException("OwnerId cannot be empty");
+        OwnerId = ownerId;
     }
 }

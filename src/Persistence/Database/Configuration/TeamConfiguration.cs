@@ -13,11 +13,6 @@ internal sealed class TeamConfiguration : IEntityTypeConfiguration<Team>
 
         builder.Property(t => t.Name).IsRequired().HasMaxLength(100);
 
-        builder.HasOne(t => t.Owner)
-            .WithOne()
-            .HasForeignKey<Team>(t => t.OwnerId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne(t => t.CarFleet)
             .WithOne(cf => cf.Team)
             .HasForeignKey<CarFleet>(cf => cf.TeamId)

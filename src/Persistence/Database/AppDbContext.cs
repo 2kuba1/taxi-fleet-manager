@@ -11,11 +11,12 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<User> Users { get; set; }
-    public Car Cars { get; set; }
-    public CarFleet CarFleets { get; set; }
-    public Role Roles { get; set; }
-    public ShiftReport ShiftReports { get; set; }
-    public WorkShift WorkShifts { get; set; }
+    public DbSet<Car> Cars { get; set; }
+    public DbSet<CarFleet> CarFleets { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<ShiftReport> ShiftReports { get; set; }
+    public DbSet<WorkShift> WorkShifts { get; set; }
+    public DbSet<Team> Teams { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

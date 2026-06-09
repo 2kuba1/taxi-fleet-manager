@@ -12,7 +12,7 @@ using Persistence.Database;
 namespace Persistence.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260608124346_Init")]
+    [Migration("20260609125155_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -178,9 +178,6 @@ namespace Persistence.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId")
-                        .IsUnique();
-
                     b.ToTable("Teams", "business");
                 });
 
@@ -221,11 +218,6 @@ namespace Persistence.Database.Migrations
                         .HasMaxLength(8)
                         .IsUnicode(true)
                         .HasColumnType("character varying(8)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .IsUnicode(true)
-                        .HasColumnType("text");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
@@ -615,17 +607,6 @@ namespace Persistence.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Team", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Owner")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Team", "OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
