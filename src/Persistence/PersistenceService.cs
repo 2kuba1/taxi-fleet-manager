@@ -36,6 +36,7 @@ public static class PersistenceService
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
     }
