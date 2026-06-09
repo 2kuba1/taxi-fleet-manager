@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Contracts;
 using Persistence.Database;
 using Persistence.Identity;
-using Persistence.Services;
 
 namespace Persistence;
 

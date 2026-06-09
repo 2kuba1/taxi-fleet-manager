@@ -3,7 +3,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Database;
 
-namespace Persistence.Services;
+namespace Persistence.Contracts;
 
 public sealed class UserService(AppDbContext dbContext) : IUserService
 {

@@ -3,7 +3,7 @@ using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Identity;
 
-namespace Persistence.Services;
+namespace Persistence.Contracts;
 
 public sealed class IdentityService(UserManager<ApplicationUser> userManager) : IIdentityService
 {
