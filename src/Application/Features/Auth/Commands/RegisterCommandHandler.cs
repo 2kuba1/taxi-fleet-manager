@@ -6,12 +6,13 @@ using Domain.Entities;
 using Domain.Exceptions;
 
 namespace Application.Features.Auth.Commands;
-//todo introduce unit of work and transaction
+
 public sealed class RegisterCommandHandler(
     IIdentityService identityService,
     IUserService userService,
     IEmailService emailService,
-    IRoleService roleService) : ICommandHandler<RegisterCommand>
+    IRoleService roleService,
+    IUnitOfWork unitOfWork) : ICommandHandler<RegisterCommand>
 {
     public async Task Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
@@ -31,12 +32,6 @@ public sealed class RegisterCommandHandler(
         var userId = Guid.NewGuid();
         var temporaryPassword = GenerateTemporaryPassword();
 
-        var identityResult =
-            await identityService.CreateUserAsync(userId, finalLogin, command.Email, temporaryPassword);
-
-        if (!identityResult.Succeeded)
-            throw new UserCreationFailedException($"User creation failed: {identityResult.ErrorMessage}");
-
         var role = await roleService.GetRoleByNameAsync("Driver");
 
         if (role == null)
@@ -44,20 +39,36 @@ public sealed class RegisterCommandHandler(
             throw new RoleNotFoundException($"Role 'Driver' not found.");
         }
         
-        var domainUser = User.Create(userId,
-            command.Email,
-            finalLogin,
-            command.PhoneNumber,
-            command.AreaCode,
-            command.FirstName,
-            command.LastName,
-            command.KilometerRate,
-            command.ContractType,
-            role.Id,
-            command.TeamId);
+        await unitOfWork.BeginTransactionAsync(cancellationToken);
+        
+        try
+        {
+            var identityResult =
+                await identityService.CreateUserAsync(userId, finalLogin, command.Email, temporaryPassword);
 
-        await userService.SaveUserAsync(domainUser);
+            if (!identityResult.Succeeded)
+                throw new UserCreationFailedException($"User creation failed: {identityResult.ErrorMessage}");
+            
+            var domainUser = User.Create(userId,
+                command.Email,
+                finalLogin,
+                command.PhoneNumber,
+                command.AreaCode,
+                command.FirstName,
+                command.LastName,
+                command.KilometerRate,
+                command.ContractType,
+                role.Id,
+                command.TeamId);
 
+            await userService.SaveUserAsync(domainUser);
+        }
+        catch(Exception)
+        {
+            await unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw;
+        }
+        
         var resetToken = await identityService.GeneratePasswordResetTokenAsync(command.Email);
         await emailService.SendWelcomeEmailAsync(command.Email, finalLogin, temporaryPassword, resetToken);
     }
