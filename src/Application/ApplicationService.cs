@@ -1,3 +1,4 @@
+using Cortex.Mediator.Behaviors;
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,9 @@ public static class ApplicationService
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddCortexMediator([typeof(ApplicationService)],
-            opt => opt.AddDefaultBehaviors());
+            opt => opt
+                .AddDefaultBehaviors()
+                .AddOpenCommandPipelineBehavior(typeof(ValidationCommandBehavior<,>)));
         
         return services;
     }

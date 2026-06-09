@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Cortex.Mediator" Version="3.1.2" />
+    <PackageReference Include="Cortex.Mediator.Behaviors.FluentValidation" Version="3.1.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
   </ItemGroup>
 
   <ItemGroup>
