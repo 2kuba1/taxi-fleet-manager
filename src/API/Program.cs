@@ -2,11 +2,9 @@ using System.Text;
 using API.Endpoints;
 using Application;
 using Infrastructure;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Persistence.Extensions;
-using Persistence.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

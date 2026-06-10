@@ -39,6 +39,7 @@ public class LoginQueryTests
 
         string expectedAccessToken = "access_token";
         RefreshToken  expectedRefreshToken = RefreshToken.Create("refresh_token_hash", expectedUser.Id, DateTime.UtcNow.AddDays(30));
+        string expectedRawRefreshToken = "refresh_token_raw";
         
         _identityService.CheckLoginCredentialsAsync(query.Login, query.Password).Returns(true);
         
@@ -48,7 +49,7 @@ public class LoginQueryTests
             .Returns(expectedAccessToken);
         
         _tokenService.CreateRefreshToken(expectedUser.Id)
-            .Returns(expectedRefreshToken);
+            .Returns((expectedRefreshToken, expectedRawRefreshToken));
         
         //Act
         var act = await _handler.Handle(query, CancellationToken.None);

@@ -1,3 +1,4 @@
+using Application.Features.Auth.Commands.RefreshAuthToken;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Queries.Login;
 using Cortex.Mediator;
@@ -14,6 +15,7 @@ public static class AuthEndpoints
 
         group.MapPost("/register", Register);
         group.MapPost("/login", Login);
+        group.MapPost("/refresh", RefreshAuthToken);
     }
 
     private static async Task<IResult> Register([FromBody] RegisterBody body, [FromServices] IMediator mediator)
@@ -27,7 +29,14 @@ public static class AuthEndpoints
         var tokens = await mediator.SendQueryAsync(new LoginQuery(body.Login, body.Password));
         return Results.Ok(tokens);
     }
- 
+
+    private static async Task<IResult> RefreshAuthToken([FromBody] RefreshAuthTokenBody body,
+        [FromServices] IMediator mediator)
+    {
+        var tokens = await mediator.SendCommandAsync(new RefreshAuthTokenCommand(body.RefreshToken));
+        return Results.Ok(tokens);
+    }
+    
     private record RegisterBody(
         string Email,
         string FirstName,
@@ -41,4 +50,8 @@ public static class AuthEndpoints
     private record LoginBody(
         string Login,
         string Password);
+
+    private record RefreshAuthTokenBody(
+        string RefreshToken
+    );
 }

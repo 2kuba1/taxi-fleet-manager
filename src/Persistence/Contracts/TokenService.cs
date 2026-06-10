@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Application.Contracts.Persistence;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -12,19 +13,35 @@ namespace Persistence.Contracts;
 
 public class TokenService(IConfiguration configuration, AppDbContext dbContext) : ITokenService
 {
-    public async Task<RefreshToken> CreateRefreshToken(Guid userId)
+    public async Task<(RefreshToken refreshToken, string rawRefreshToken)> CreateRefreshToken(Guid userId)
     {
-        var token = GenerateHashedRefreshToken();
-        var expiresAt = DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("Jwt:RefreshTokenExpirationInDays"));
+        var rawToken = Base64UrlEncoder.Encode(RandomNumberGenerator.GetBytes(64));
+        
+        var hashedToken = HashToken(rawToken);
+        
+        var expiresAt = DateTime.UtcNow.AddHours(configuration.GetValue<int>("Jwt:RefreshTokenExpirationInDays"));
 
-        var refreshToken = RefreshToken.Create(token, userId, expiresAt);
+        var refreshToken = RefreshToken.Create(hashedToken, userId, expiresAt);
         
         await dbContext.RefreshTokens.AddAsync(refreshToken);
         await dbContext.SaveChangesAsync();
         
-        return refreshToken;
+        return (refreshToken, rawToken);
     }
-    
+
+    public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken)
+    {
+        var tokenHash = HashToken(refreshToken);
+        return await dbContext.RefreshTokens.Include(u => u.User)
+            .FirstOrDefaultAsync(r => r.TokenHash == tokenHash);
+    }
+
+    public async Task RevokeOldRefreshTokenAsync(RefreshToken refreshToken)
+    {
+        dbContext.RefreshTokens.Remove(refreshToken);
+        await dbContext.SaveChangesAsync();
+    }
+
     public string CreateAccessToken(User user)
     {
         var secretKey = configuration["Jwt:Secret"];
@@ -59,10 +76,8 @@ public class TokenService(IConfiguration configuration, AppDbContext dbContext) 
         return token;
     }
     
-    private string GenerateHashedRefreshToken()
+    private string HashToken(string token)
     {
-        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-        
         using var sha256 = SHA256.Create();
         var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(token));
         return Convert.ToBase64String(bytes);

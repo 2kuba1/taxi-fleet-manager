@@ -5,7 +5,7 @@ using Domain.Exceptions;
 
 namespace Application.Features.Auth.Queries.Login;
 
-public class LoginQueryHandler(
+public sealed class LoginQueryHandler(
     IIdentityService identityService,
     IUserService userService,
     ITokenService tokenService) : IQueryHandler<LoginQuery, TokenResponseDto>
@@ -25,6 +25,6 @@ public class LoginQueryHandler(
         var accessToken = tokenService.CreateAccessToken(domainUser);
         var refreshToken = await tokenService.CreateRefreshToken(domainUser.Id);
         
-        return new TokenResponseDto(accessToken, refreshToken.TokenHash);
+        return new TokenResponseDto(accessToken, refreshToken.rawRefreshToken);
     }
 }
