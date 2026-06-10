@@ -5,7 +5,7 @@ using Cortex.Mediator.Commands;
 using Domain.Entities;
 using Domain.Exceptions;
 
-namespace Application.Features.Auth.Commands;
+namespace Application.Features.Auth.Commands.Register;
 
 public sealed class RegisterCommandHandler(
     IIdentityService identityService,

@@ -1,4 +1,5 @@
-using Application.Features.Auth.Commands;
+using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Queries.Login;
 using Cortex.Mediator;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ public static class AuthEndpoints
         var group = endpoints.MapGroup("/api/auth");
 
         group.MapPost("/register", Register);
+        group.MapPost("/login", Login);
     }
 
     private static async Task<IResult> Register([FromBody] RegisterBody body, [FromServices] IMediator mediator)
@@ -20,6 +22,12 @@ public static class AuthEndpoints
         return Results.NoContent();
     }
 
+    private static async Task<IResult> Login([FromBody] LoginBody body, [FromServices] IMediator mediator)
+    {
+        var tokens = await mediator.SendQueryAsync(new LoginQuery(body.Login, body.Password));
+        return Results.Ok(tokens);
+    }
+ 
     private record RegisterBody(
         string Email,
         string FirstName,
@@ -29,4 +37,8 @@ public static class AuthEndpoints
         float KilometerRate,
         ContractType ContractType,
         Guid TeamId);
+
+    private record LoginBody(
+        string Login,
+        string Password);
 }

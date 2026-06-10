@@ -1,4 +1,3 @@
-using System.Data;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -54,11 +53,7 @@ public static class UserTeamRoleSeeder
         {
             Id = InitialOwnerUserId,
             UserName = login,
-            NormalizedUserName = login.ToUpperInvariant(),
             Email = email,
-            NormalizedEmail = email.ToUpperInvariant(),
-            EmailConfirmed = true,
-            SecurityStamp = Guid.NewGuid().ToString()
         };
 
         var passwordHasher = new PasswordHasher<ApplicationUser>();

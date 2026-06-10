@@ -1,6 +1,7 @@
 using Application.Contracts.Infrastructure;
 using Application.Contracts.Persistence;
 using Application.Features.Auth.Commands;
+using Application.Features.Auth.Commands.Register;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
