@@ -17,6 +17,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ShiftReport> ShiftReports { get; set; }
     public DbSet<WorkShift> WorkShifts { get; set; }
     public DbSet<Team> Teams { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

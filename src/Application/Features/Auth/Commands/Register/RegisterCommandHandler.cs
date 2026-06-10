@@ -30,7 +30,7 @@ public sealed class RegisterCommandHandler(
         }
 
         var userId = Guid.NewGuid();
-        var temporaryPassword = GenerateTemporaryPassword();
+        var temporaryPassword = "Test123!";
 
         var role = await roleService.GetRoleByNameAsync("Driver");
 
@@ -62,6 +62,8 @@ public sealed class RegisterCommandHandler(
                 command.TeamId);
 
             await userService.SaveUserAsync(domainUser);
+            await unitOfWork.CommitTransactionAsync(cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
         }
         catch(Exception)
         {
