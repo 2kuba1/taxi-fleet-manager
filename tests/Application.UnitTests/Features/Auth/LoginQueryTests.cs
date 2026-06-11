@@ -57,7 +57,7 @@ public class LoginQueryTests
         //Assert
         act.ShouldNotBeNull();
         act.AccessToken.ShouldBe(expectedAccessToken);
-        act.RefreshToken.ShouldBe(expectedRefreshToken.TokenHash);
+        act.RefreshToken.ShouldBe(expectedRawRefreshToken);
         
         await _identityService.Received(1).CheckLoginCredentialsAsync(query.Login, query.Password);
         await _userService.Received(1).GetUserByLoginAsync(query.Login);
