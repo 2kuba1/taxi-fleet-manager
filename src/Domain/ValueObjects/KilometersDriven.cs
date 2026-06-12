@@ -10,6 +10,8 @@ public record KilometersDriven : ValueObject
     {
         Value = value;
     }
+    
+    protected KilometersDriven(){}
 
     public static KilometersDriven Create(int value)
     {

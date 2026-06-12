@@ -25,9 +25,10 @@ public class User : BaseEntity
 
     protected User(){}
 
-    private User(string email, string login, string phoneNumber, string areaCode, string firstName,
-        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
+    private User(Guid id, string email, string login, string phoneNumber, string areaCode, string firstName,
+        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid? teamId)
     {
+        Id = id;
         Email = email;
         Login = login;
         PhoneNumber = PhoneNumber.Create(phoneNumber, areaCode);
@@ -43,6 +44,7 @@ public class User : BaseEntity
         /// <summary>
         /// Factory method that creates a new instance of a <see cref="User"/> (driver or administrator) ensuring all business invariants are met.
         /// </summary>
+        /// <param name="id">The user's unique identification Guid.</param>
         /// <param name="email">The user's email address used for communication and identification. Cannot be empty and must contain the '@' character.</param>
         /// <param name="login">The unique login credential for the user. Cannot be empty and must be between 3 and 8 characters long.</param>
         /// <param name="phoneNumber">The 9-digit phone number of the user.</param>
@@ -57,16 +59,20 @@ public class User : BaseEntity
         /// <exception cref="ArgumentException">
         /// Thrown when:
         /// <list type="bullet">
+        /// <item><description>The <paramref name="id"/> is empty.</description></item>
         /// <item><description>The <paramref name="email"/> is null, empty, or does not contain an '@' character.</description></item>
         /// <item><description>The <paramref name="login"/> is null, empty, or its length is outside the 3-8 character range.</description></item>
         /// <item><description>The underlying phone number validation within <see cref="PhoneNumber"/> fails due to an invalid format.</description></item>
         /// </list>
         /// </exception>
     #endregion
-    public static User Create(string email, string login, string phoneNumber, string areaCode,
-        string firstName,
-        string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid teamId)
+        
+    public static User Create(Guid id, string email, string login, string phoneNumber, string areaCode, string firstName, 
+            string lastName, float kilometerRate, ContractType contractType, Guid roleId, Guid? teamId = null)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty");
+        
         if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
             throw new ArgumentException("Email is invalid");
 
@@ -80,6 +86,14 @@ public class User : BaseEntity
             throw new ArgumentException("Last name cannot be empty");
         
 
-        return new User(email, login, phoneNumber, areaCode, firstName, lastName, kilometerRate, contractType, roleId, teamId);
+        return new User(id, email, login, phoneNumber, areaCode, firstName, lastName, kilometerRate, contractType, roleId, teamId);
+    }
+        
+    public void AssignTeam(Guid teamId)
+    {
+        if (teamId == Guid.Empty)
+            throw new ArgumentException();
+
+        TeamId = teamId;
     }
 }

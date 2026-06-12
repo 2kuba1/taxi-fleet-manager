@@ -1,0 +1,25 @@
+using Application.Contracts.Persistence;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Database;
+
+namespace Persistence.Contracts;
+
+public sealed class UserService(AppDbContext dbContext) : IUserService
+{
+    public async Task SaveUserAsync(User user)
+    {
+        await dbContext.Users.AddAsync(user);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> CheckIfEmailExistsAsync(string email)
+    {
+        return await dbContext.Users.AsNoTracking().AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<User?> GetUserByLoginAsync(string login)
+    {
+        return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Login == login);
+    }
+}
