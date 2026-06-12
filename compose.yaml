@@ -1,0 +1,46 @@
+﻿services:
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DatabaseConnectionString=Host=database;Port=5432;Password=${DB_PASSWORD};Persist Security Info=True;Username=${DB_USER};Database=${DB_DATABASE}
+      - Jwt__Secret=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__AccessTokenExpirationInMinutes=${JWT_ACCESS_TOKEN_EXPIRATION}
+      - Jwt__RefreshTokenExpirationInDays=${JWT_REFRESH_TOKEN_EXPIRATION}
+      - SeedSettings__InitialOwnerPassword=${SEED_INITIAL_OWNER_PASSWORD}
+      - SeedSettings__InitialOwnerEmail=${SEED_INITIAL_OWNER_EMAIL}
+      - SeedSettings__InitialOwnerLogin=${SEED_INITIAL_OWNER_LOGIN}
+      - SeedSettings__InitialOwnerPhoneNumber=${SEED_INITIAL_OWNER_PHONE}
+      - SeedSettings__InitialOwnerAreaCode=${SEED_INITIAL_OWNER_AREA_CODE}
+      - SeedSettings__InitialOwnerFirstName=${SEED_INITIAL_OWNER_FIRST_NAME}
+      - SeedSettings__InitialOwnerLastname=${SEED_INITIAL_OWNER_LAST_NAME}
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: always
+
+
+  database:
+    image: postgres:18-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ./.containers/database:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
