@@ -39,6 +39,20 @@ builder.Services.AddAuthentication()
         };
     });
 
+//Cors
+builder.Services.AddCors(opt =>
+{
+    var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>();
+    
+    opt.AddPolicy("WebAppCorsPolicy", policy =>
+    {
+        policy.WithOrigins(corsOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -56,6 +70,8 @@ if (app.Environment.IsDevelopment())
 await app.SeedDatabaseAsync();
 
 app.UseHttpsRedirection();
+
+app.UseCors("WebAppCorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
