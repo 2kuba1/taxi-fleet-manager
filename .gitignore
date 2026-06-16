@@ -9,6 +9,9 @@
 # appsettings
 appsettings.json
 
+#containers
+.containers/
+
 # User-specific files
 *.rsuser
 *.suo
