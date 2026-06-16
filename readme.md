@@ -56,6 +56,9 @@ To set up and run the Taxi Fleet Manager API locally using Docker Compose, follo
     SEED_INITIAL_OWNER_LAST_NAME=<initial_admin_last_name>
 
     CORS_ORIGIN_0=<pwa_app_url>
+
+    SMTP_USERNAME=<your_smtp_provider_username>
+    SMTP_PASSWORD=<your_smtp_provider_password>
     ```
 
 3.  **Run with Docker Compose**: Navigate to the project's root directory in your terminal and execute the following command:

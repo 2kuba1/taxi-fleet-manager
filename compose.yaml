@@ -25,11 +25,12 @@ services:
       - SeedSettings__InitialOwnerFirstName=${SEED_INITIAL_OWNER_FIRST_NAME}
       - SeedSettings__InitialOwnerLastname=${SEED_INITIAL_OWNER_LAST_NAME}
       - Cors__Origins__0=${CORS_ORIGIN_0}
+      - Smtp__Username=${SMTP_USERNAME}
+      - Smtp__Password=${SMTP_PASSWORD}
     depends_on:
       database:
         condition: service_healthy
     restart: always
-
 
   database:
     image: postgres:18-alpine

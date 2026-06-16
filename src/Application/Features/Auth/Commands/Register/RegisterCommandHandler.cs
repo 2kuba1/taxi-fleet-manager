@@ -30,7 +30,7 @@ public sealed class RegisterCommandHandler(
         }
 
         var userId = Guid.NewGuid();
-        var temporaryPassword = "Test123!";
+        var temporaryPassword = GenerateTemporaryPassword();
 
         var role = await roleService.GetRoleByNameAsync("Driver");
 

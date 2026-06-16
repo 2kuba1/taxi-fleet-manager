@@ -19,7 +19,8 @@ public sealed class IdentityService(UserManager<ApplicationUser> userManager, Si
         {
             Id = userId,
             UserName = login,
-            Email = email
+            Email = email,
+            EmailConfirmed = false,
         };
 
         var result = await userManager.CreateAsync(identityUser, temporaryPassword);
@@ -52,12 +53,47 @@ public sealed class IdentityService(UserManager<ApplicationUser> userManager, Si
     public async Task<bool> CheckLoginCredentialsAsync(string login, string password)
     {
         var user = await userManager.FindByNameAsync(login);
-
+            
         if (user == null)
+            return false;
+        
+        if(!user.EmailConfirmed)
             return false;
         
         var result = await signInManager.CheckPasswordSignInAsync(user, password, true);
 
         return result.Succeeded;
+    }
+
+    public async Task<bool> CheckPasswordResetTokenAsync(string token, string email)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            return false;
+
+        var isValid =
+            await userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword", token);
+
+        return isValid;
+    }
+
+    public async Task SetupPasswordAsync(string token, string email, string temporaryPassword, string newPassword)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            throw new UserNotFoundException($"User not found.");
+ 
+        if(userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash!, temporaryPassword) == PasswordVerificationResult.Failed)
+            throw new InvalidResetTokenException("Invalid reset token.");
+        
+        var result = await userManager.ResetPasswordAsync(user, token, newPassword);
+        
+        if(result.Errors.Any())
+            throw new InvalidResetTokenException("Invalid reset token.");
+
+        user.EmailConfirmed = true;
+        await userManager.UpdateAsync(user);
     }
 }

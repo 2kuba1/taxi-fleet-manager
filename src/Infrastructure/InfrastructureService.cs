@@ -9,6 +9,8 @@ public static class InfrastructureService
     public static IServiceCollection AddInfrastructureService(this IServiceCollection services)
     {
         services.AddScoped<IEmailService, EmailService>();
+
+        services.AddHttpClient();
         
         return services;
     }
