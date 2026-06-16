@@ -54,6 +54,7 @@ public static class UserTeamRoleSeeder
             Id = InitialOwnerUserId,
             UserName = login,
             Email = email,
+            NormalizedUserName =  login.ToUpper(),
         };
 
         var passwordHasher = new PasswordHasher<ApplicationUser>();

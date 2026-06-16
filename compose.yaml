@@ -1,6 +1,8 @@
-﻿services:
+﻿name: taxi-fleet-manager
+
+services:
   api:
-    image: api
+    image: taxi-fleet-manager-api
     build:
       context: .
       dockerfile: src/API/Dockerfile
@@ -22,6 +24,7 @@
       - SeedSettings__InitialOwnerAreaCode=${SEED_INITIAL_OWNER_AREA_CODE}
       - SeedSettings__InitialOwnerFirstName=${SEED_INITIAL_OWNER_FIRST_NAME}
       - SeedSettings__InitialOwnerLastname=${SEED_INITIAL_OWNER_LAST_NAME}
+      - Cors__Origins__0=${CORS_ORIGIN_0}
     depends_on:
       database:
         condition: service_healthy
@@ -30,7 +33,7 @@
 
   database:
     image: postgres:18-alpine
-    container_name: postgres
+    container_name: taxi_postgres
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}

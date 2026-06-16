@@ -6,29 +6,28 @@
 
 ## ✨ Key Features
 
-*   **User Authentication & Authorization**: Secure registration, login, and refresh token mechanisms using JWT.
+- **User Authentication & Authorization**: Secure registration, login, and refresh token mechanisms using JWT.
 
 ## 🤝 TODO
 
-*   **User Management**: Defines users (drivers, administrators) with properties like email, login, phone number, kilometer rate, and contract type, assignable to specific roles and teams.
-*   **Fleet Management**: Manages individual cars with detailed information including brand, model, license plate, VIN, inspection dates, and insurance renewal dates, organized into car fleets.
-*   **Work Shift & Reporting**: Functionality to track work shifts and generate shift reports.
-*   **Team Organization**: Users can be assigned to teams, allowing for logical grouping (e.g., by city branch).
-*   **Data Persistence**: Robust data storage and retrieval using PostgreSQL.
-*   **settlement with employees**: Users can track their killometers driven and card payments sum and than settle with team owner
-
+- **User Management**: Defines users (drivers, administrators) with properties like email, login, phone number, kilometer rate, and contract type, assignable to specific roles and teams.
+- **Fleet Management**: Manages individual cars with detailed information including brand, model, license plate, VIN, inspection dates, and insurance renewal dates, organized into car fleets.
+- **Work Shift & Reporting**: Functionality to track work shifts and generate shift reports.
+- **Team Organization**: Users can be assigned to teams, allowing for logical grouping (e.g., by city branch).
+- **Data Persistence**: Robust data storage and retrieval using PostgreSQL.
+- **settlement with employees**: Users can track their killometers driven and card payments sum and than settle with team owner
 
 ## 🛠️ Tech Stack
 
-*   **Framework**: ASP.NET Core
-*   **Runtime**: .NET 10.0
-*   **ORM**: Entity Framework Core
-*   **Database**: PostgreSQL
-*   **Authentication**: JWT (JSON Web Tokens)
-*   **Containerization**: Docker & Docker Compose
-*   **Command/Query Pattern**: Cortex.Mediator
-*   **Identity Management**: ASP.NET Core Identity
-*   **API Documentation**: Swagger/OpenAPI
+- **Framework**: ASP.NET Core
+- **Runtime**: .NET 10.0
+- **ORM**: Entity Framework Core
+- **Database**: PostgreSQL
+- **Authentication**: JWT (JSON Web Tokens)
+- **Containerization**: Docker & Docker Compose
+- **Command/Query Pattern**: Cortex.Mediator
+- **Identity Management**: ASP.NET Core Identity
+- **API Documentation**: Swagger/OpenAPI
 
 ## 🚀 Installation
 
@@ -36,6 +35,7 @@ To set up and run the Taxi Fleet Manager API locally using Docker Compose, follo
 
 1.  **Prerequisites**: Ensure you have Docker and Docker Compose installed on your system.
 2.  **Environment Variables**: Create a `.env` file in the project's root directory (where `compose.yaml` is located). Populate it with the following environment variables:
+
     ```ini
     DB_USER=<your_database_user>
     DB_PASSWORD=<your_database_password>
@@ -54,7 +54,10 @@ To set up and run the Taxi Fleet Manager API locally using Docker Compose, follo
     SEED_INITIAL_OWNER_AREA_CODE=<initial_admin_phone_area_code>
     SEED_INITIAL_OWNER_FIRST_NAME=<initial_admin_first_name>
     SEED_INITIAL_OWNER_LAST_NAME=<initial_admin_last_name>
+
+    CORS_ORIGIN_0=<pwa_app_url>
     ```
+
 3.  **Run with Docker Compose**: Navigate to the project's root directory in your terminal and execute the following command:
     ```bash
     docker compose up -d
@@ -65,8 +68,8 @@ To set up and run the Taxi Fleet Manager API locally using Docker Compose, follo
 
 Once the services are running:
 
-*   The API endpoints will be accessible at `http://localhost:5000` (HTTP) and `https://localhost:5001` (HTTPS).
-*   During development, the API documentation (Swagger UI) can be accessed by navigating to `http://localhost:5000/` in your web browser. This interface allows you to explore the available endpoints and interact with the API.
+- The API endpoints will be accessible at `http://localhost:5000` (HTTP) and `https://localhost:5001` (HTTPS).
+- During development, the API documentation (Swagger UI) can be accessed by navigating to `http://localhost:5000/` in your web browser. This interface allows you to explore the available endpoints and interact with the API.
 
 ## 🔧 How It Works
 
