@@ -6,8 +6,12 @@ import axios from "axios";
 import TokenResponse from "./interfaces/TokenResponse";
 import { setAuthCookies } from "./actions/auth";
 import { MoonLoader } from "react-spinners";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const resetSuccess = searchParams.get("reset-success");
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,6 +30,16 @@ export default function Home() {
 
     if (!password) {
       setError("Hasło nie może być puste.");
+      setLoading(false);
+      return;
+    }
+
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Hasło musi mieć co najmniej 8 znaków, zawierać jedną wielką literę, jedną cyfrę oraz jeden znak specjalny.",
+      );
       setLoading(false);
       return;
     }
@@ -106,15 +120,22 @@ export default function Home() {
           />
           <button
             type="submit"
-            className="bg-[#d61e24] hover:bg-red-700 transition-colors text-white font-medium rounded-md px-4 py-3 w-full text-base mt-2"
+            className="bg-primary text-white font-medium rounded-md px-4 py-3 w-full text-base mt-2"
           >
             {loading ? <MoonLoader size={20} color="white" /> : "Zaloguj się"}
           </button>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {resetSuccess && (
+            <p className="text-green-500 text-sm mt-2">
+              Hasło zostało pomyślnie zresetowane. Możesz się zalogować.
+            </p>
+          )}
         </form>
       </main>
 
-      <div className="text-xs text-gray-400 mt-6">© 2026 Jakub Wojtyna</div>
+      <div className="text-xs text-gray-400 mt-6">
+        © 2026 Taxi Fleet Manager
+      </div>
     </div>
   );
 }
