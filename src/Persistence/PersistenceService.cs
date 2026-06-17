@@ -43,6 +43,8 @@ public static class PersistenceService
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IShiftReportService, ShiftReportService>();
+        services.AddScoped<IUserContext, UserContext>();
         
         return services;
     }

@@ -27,7 +27,8 @@ internal sealed class ShiftReportConfiguration : IEntityTypeConfiguration<ShiftR
         builder.HasOne(sr => sr.Car)
             .WithMany()
             .HasForeignKey(sr => sr.CarId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict); 
 
         builder.HasOne(sr => sr.User)
             .WithMany(u => u.ShiftReports)

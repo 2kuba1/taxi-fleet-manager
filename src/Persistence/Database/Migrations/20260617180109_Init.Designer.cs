@@ -12,7 +12,7 @@ using Persistence.Database;
 namespace Persistence.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260612183149_Init")]
+    [Migration("20260617180109_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -155,7 +155,7 @@ namespace Persistence.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CarId")
+                    b.Property<Guid?>("CarId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -170,6 +170,9 @@ namespace Persistence.Database.Migrations
                     b.Property<string>("ReportStatus")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("ShiftDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -600,8 +603,7 @@ namespace Persistence.Database.Migrations
                     b.HasOne("Domain.Entities.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("ShiftReports")

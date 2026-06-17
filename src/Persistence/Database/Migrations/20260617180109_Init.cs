@@ -362,7 +362,8 @@ namespace Persistence.Database.Migrations
                     KilometersDriven = table.Column<int>(type: "integer", nullable: false),
                     CardTransactionsSum = table.Column<float>(type: "real", nullable: false),
                     ReportStatus = table.Column<string>(type: "text", nullable: false),
-                    CarId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShiftDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CarId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

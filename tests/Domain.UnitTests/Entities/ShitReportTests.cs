@@ -22,6 +22,7 @@ public class ShitReportTests
             expectedPhotoUrl,
             expectedKilometers,
             expectedTransactionSum,
+            DateTime.UtcNow,
             expectedCarId);
         
         //Assert
@@ -49,7 +50,7 @@ public class ShitReportTests
         float transactionsSum = 100.00f;
 
         //Act
-        Action report = () => ShiftReport.Create(emptyUserId, photoUrl, kilometers, transactionsSum, carId);
+        Action report = () => ShiftReport.Create(emptyUserId, photoUrl, kilometers, transactionsSum, DateTime.UtcNow, carId);
 
         //Assert
         Assert.Throws<ArgumentException>(report);
@@ -66,7 +67,7 @@ public class ShitReportTests
         float transactionsSum = 100.00f;
 
         //Act
-        var report = () => ShiftReport.Create(userId, photoUrl, kilometers, transactionsSum, emptyCarId);
+        var report = () => ShiftReport.Create(userId, photoUrl, kilometers, transactionsSum, DateTime.UtcNow, emptyCarId);
 
         //Assert
         Assert.Throws<ArgumentException>(report);
@@ -84,7 +85,7 @@ public class ShitReportTests
         float transactionsSum = 100.00f;
 
         //Act
-        var report = () => ShiftReport.Create(userId, invalidPhotoUrl!, kilometers, transactionsSum, carId);
+        var report = () => ShiftReport.Create(userId, invalidPhotoUrl!, kilometers, transactionsSum, DateTime.UtcNow, carId);
 
         //Assert
         Assert.Throws<ArgumentException>(report);
@@ -101,6 +102,7 @@ public class ShitReportTests
             "https://storage.provider.com/photo.jpg", 
             100, 
             250.00f, 
+            DateTime.UtcNow,
             Guid.NewGuid());
 
         //Act
