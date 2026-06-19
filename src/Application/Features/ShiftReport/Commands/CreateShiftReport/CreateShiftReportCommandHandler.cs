@@ -20,7 +20,7 @@ public class CreateShiftReportCommandHandler(IShiftReportService shiftReportServ
             throw new UserNotFoundException($"User with id {userId} not found");
 
         
-        var fullFileName = command.FileName+"-"+userId;
+        var fullFileName = userId+"-"+command.FileName;
         var imageUrl = configuration["Cdn:Url"] + "/" + fullFileName;
 
         await unitOfWork.BeginTransactionAsync(cancellationToken);

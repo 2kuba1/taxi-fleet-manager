@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
 import TokenResponse from "./interfaces/TokenResponse";
-import { setAuthCookies } from "./actions/auth";
 import { MoonLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
+import { setAuthCookies } from "./actions/auth";
 
 export default function Home() {
   const searchParams = useSearchParams();

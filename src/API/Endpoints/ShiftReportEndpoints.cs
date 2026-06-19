@@ -8,7 +8,7 @@ public static class ShiftReportEndpoints
 {
     public static IEndpointRouteBuilder MapShiftReportEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/workshift");
+        var group = endpoints.MapGroup("/api/shift-report");
 
         group.MapPost("/create", CreateWorkShiftReport)
             .DisableAntiforgery()
