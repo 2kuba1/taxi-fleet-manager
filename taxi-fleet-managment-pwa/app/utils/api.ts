@@ -3,9 +3,13 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 import TokenResponse from "../interfaces/TokenResponse";
+import https from "https";
 
 const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: process.env.NODE_ENV === "production",
+  }),
 });
 
 api.interceptors.request.use(
