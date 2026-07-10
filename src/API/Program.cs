@@ -77,5 +77,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAuthEndpoints();
+app.MapShiftReportEndpoints();
 
 app.Run();

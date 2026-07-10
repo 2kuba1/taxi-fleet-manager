@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
-import TokenResponse from "./interfaces/TokenResponse";
-import { setAuthCookies } from "./actions/auth";
+import TokenResponse from "../interfaces/TokenResponse";
 import { MoonLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
+import { setAuthCookies } from "../actions/auth";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -73,15 +73,15 @@ export default function Home() {
     <div className="flex flex-col min-h-screen items-center justify-between font-sans p-6 bg-white">
       <main className="flex flex-col items-center w-full max-w-sm">
         <Image
-          src="/okaycieszyn.png"
-          alt="Okay taxi cieszyn logo"
+          src="/taxi-logo.png"
+          alt="Taxi cieszyn logo"
           width={250}
           height={250}
           priority
         />
 
         <h1 className="text-3xl font-bold text-center">
-          Okay Taxi Cieszyn
+          Taxi Cieszyn
           <br />
           Fleet Manager
         </h1>
