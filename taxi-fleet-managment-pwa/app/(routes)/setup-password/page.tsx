@@ -132,8 +132,8 @@ export default function SetupPasswordPage() {
     <div className="flex flex-col min-h-screen items-center justify-between font-sans p-6 bg-white">
       <main className="flex flex-col items-center w-full max-w-sm">
         <Image
-          src="/okaycieszyn.png"
-          alt="Okay taxi cieszyn logo"
+          src="/taxi-logo.png"
+          alt="Taxi cieszyn logo"
           width={250}
           height={250}
           priority

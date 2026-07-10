@@ -11,8 +11,8 @@ import {
   CalendarCheck,
 } from "lucide-react";
 
-import CameraCapture from "../components/CameraCapture";
-import { createShiftReport } from "../actions/shiftReport";
+import CameraCapture from "../../components/CameraCapture";
+import { createShiftReport } from "../../actions/shiftReport";
 
 const CARS = [
   { id: "1", brand: "Toyota", model: "Corola" },
