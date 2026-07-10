@@ -1,13 +1,13 @@
 using Application.Contracts.Persistence;
-using Application.Models.DTOs;
+using Application.Models.Responses;
 using Cortex.Mediator.Commands;
 using Domain.Exceptions;
 
 namespace Application.Features.Auth.Commands.RefreshAuthToken;
 
-public sealed class RefreshAuthTokenCommandHandler(ITokenService tokenService) : ICommandHandler<RefreshAuthTokenCommand, TokenResponseDto>
+public sealed class RefreshAuthTokenCommandHandler(ITokenService tokenService) : ICommandHandler<RefreshAuthTokenCommand, TokenResponse>
 {
-    public async Task<TokenResponseDto> Handle(RefreshAuthTokenCommand command, CancellationToken cancellationToken)
+    public async Task<TokenResponse> Handle(RefreshAuthTokenCommand command, CancellationToken cancellationToken)
     {
         var refreshToken = await tokenService.GetRefreshTokenAsync(command.RefreshToken);
         
@@ -19,6 +19,6 @@ public sealed class RefreshAuthTokenCommandHandler(ITokenService tokenService) :
 
         await tokenService.RevokeOldRefreshTokenAsync(refreshToken);
         
-        return new TokenResponseDto(accessToken, newRefreshToken.rawRefreshToken);
+        return new TokenResponse(accessToken, newRefreshToken.rawRefreshToken);
     }
 }

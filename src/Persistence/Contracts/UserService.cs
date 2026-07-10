@@ -20,6 +20,6 @@ public sealed class UserService(AppDbContext dbContext) : IUserService
 
     public async Task<User?> GetUserByLoginAsync(string login)
     {
-        return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Login == login);
+        return await dbContext.Users.AsNoTracking().Include(r => r.Role).FirstOrDefaultAsync(u => u.Login == login);
     }
 }

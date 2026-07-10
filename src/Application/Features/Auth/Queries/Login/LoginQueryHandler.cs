@@ -1,5 +1,5 @@
 using Application.Contracts.Persistence;
-using Application.Models.DTOs;
+using Application.Models.Responses;
 using Cortex.Mediator.Queries;
 using Domain.Exceptions;
 
@@ -8,9 +8,9 @@ namespace Application.Features.Auth.Queries.Login;
 public sealed class LoginQueryHandler(
     IIdentityService identityService,
     IUserService userService,
-    ITokenService tokenService) : IQueryHandler<LoginQuery, TokenResponseDto>
+    ITokenService tokenService) : IQueryHandler<LoginQuery, TokenResponse>
 {
-    public async Task<TokenResponseDto> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<TokenResponse> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
         var validCredentials = await identityService.CheckLoginCredentialsAsync(query.Login, query.Password);
         
@@ -25,6 +25,6 @@ public sealed class LoginQueryHandler(
         var accessToken = tokenService.CreateAccessToken(domainUser);
         var refreshToken = await tokenService.CreateRefreshToken(domainUser.Id);
         
-        return new TokenResponseDto(accessToken, refreshToken.rawRefreshToken);
+        return new TokenResponse(accessToken, refreshToken.rawRefreshToken);
     }
 }

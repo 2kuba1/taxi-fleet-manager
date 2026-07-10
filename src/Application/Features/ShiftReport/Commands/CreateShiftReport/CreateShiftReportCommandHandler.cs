@@ -27,7 +27,7 @@ public class CreateShiftReportCommandHandler(IShiftReportService shiftReportServ
         try
         {
             await shiftReportService.CreateShiftReportAsync(imageUrl, command.KilometersDriven,
-                command.CardTransactionsSum, (Guid)userId, command.ShiftDay, command.CarId);
+                command.CardTransactionsSum, (Guid)userId, DateTime.SpecifyKind(command.ShiftDay, DateTimeKind.Utc), command.CarId);
             
             await cdnService.SaveImageAsync(command.Image, fullFileName);
             

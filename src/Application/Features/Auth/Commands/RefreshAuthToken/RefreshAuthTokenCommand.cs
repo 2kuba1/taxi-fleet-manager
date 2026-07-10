@@ -1,6 +1,6 @@
-using Application.Models.DTOs;
+using Application.Models.Responses;
 using Cortex.Mediator.Commands;
 
 namespace Application.Features.Auth.Commands.RefreshAuthToken;
 
-public record RefreshAuthTokenCommand(string RefreshToken) : ICommand<TokenResponseDto>;
+public record RefreshAuthTokenCommand(string RefreshToken) : ICommand<TokenResponse>;

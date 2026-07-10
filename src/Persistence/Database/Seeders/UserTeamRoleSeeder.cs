@@ -24,7 +24,7 @@ public static class UserTeamRoleSeeder
         {
             await context.Roles.AddRangeAsync(
                 Role.Create("Admin"),
-                Role.Create("User"),
+                Role.Create("Manager"),
                 Role.Create("Driver")
             );
 
@@ -38,8 +38,8 @@ public static class UserTeamRoleSeeder
         if (identityExists)
             return;
 
-        var ownerRole =
-            await context.Roles.FirstAsync(r => r.Name == "User");
+        var adminRole =
+            await context.Roles.FirstAsync(r => r.Name == "Admin");
 
         var password = configuration["SeedSettings:InitialOwnerPassword"]!;
         var email = configuration["SeedSettings:InitialOwnerEmail"]!;
@@ -77,7 +77,7 @@ public static class UserTeamRoleSeeder
             lastName,
             0f,
             ContractType.B2B,
-            ownerRole.Id,
+            adminRole.Id,
             null
         );
 

@@ -27,6 +27,7 @@ public class ShiftReport : BaseEntity
         CardTransactionsSum = CardTransactionsSum.Create(cardTransactionsSum);
         ReportStatus = ReportStatus.Unsettled;
         CarId = carId;
+        ShiftDate = shiftDate;
     }
 
     #region ShiftReportFactorySummary

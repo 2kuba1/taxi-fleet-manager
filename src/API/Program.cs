@@ -19,7 +19,15 @@ builder.Services.AddInfrastructureService();
 builder.Services.AddApplicationServices();
 
 //Auth
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("ManagementOnly", policy => policy.RequireRole("Admin", "Manager"));
+    
+    opt.AddPolicy("HasManagerRole", policy => policy.RequireRole("Manager"));
+    opt.AddPolicy("HasAdminRole", policy => policy.RequireRole("Admin"));
+    opt.AddPolicy("HasDriverRole", policy =>  policy.RequireRole("Driver"));
+});
+
 builder.Services.AddAuthentication()
     .AddJwtBearer(o =>
     {

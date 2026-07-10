@@ -6,8 +6,6 @@ import {
   Gauge,
   CreditCard,
   ChevronDown,
-  Calendar,
-  Calendar1,
   CalendarCheck,
 } from "lucide-react";
 
@@ -25,7 +23,7 @@ export default function CreateReportPage() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -54,8 +52,13 @@ export default function CreateReportPage() {
       );
       data.append("CardTransactionsSum", cashless);
 
-      const date = formElements.get("date");
-      data.append("ShiftDate", date ? String(date) : new Date().toISOString());
+      const dateValue = formElements.get("date");
+
+      const shiftDateIso = dateValue
+        ? new Date(String(dateValue)).toISOString()
+        : new Date().toISOString();
+
+      data.append("ShiftDate", shiftDateIso);
 
       const carIdValue = formElements.get("carId");
       if (carIdValue && carIdValue !== "") {
@@ -166,7 +169,7 @@ export default function CreateReportPage() {
 
           <div className="flex flex-col w-full">
             <label className="text-xs font-black uppercase tracking-wider mb-2">
-              Data
+              Data zmiany
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-gray-500">
@@ -176,11 +179,8 @@ export default function CreateReportPage() {
                 type="date"
                 name="date"
                 required
-                min="0"
-                step="0.01"
                 suppressHydrationWarning
-                placeholder="0.00"
-                className="w-full border-2 border-black rounded-sm py-2.5 pl-10 pr-4 text-sm font-medium placeholder-gray-400 focus:outline-none"
+                className="w-full border-2 border-black rounded-sm py-2.5 pl-10 pr-4 text-sm font-medium focus:outline-none"
               />
             </div>
           </div>

@@ -1,4 +1,5 @@
 ﻿using Application.Features.ShiftReport.Commands.CreateShiftReport;
+using Application.Features.ShiftReport.Queries.GetTeamReportsInPeriod;
 using Cortex.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,9 @@ public static class ShiftReportEndpoints
         group.MapPost("/create", CreateWorkShiftReport)
             .DisableAntiforgery()
             .RequireAuthorization();
+
+        group.MapGet("/getTeamReportsInPeriod", GetTeamReportsInPeriod)
+            .RequireAuthorization("ManagementOnly");
         
         return endpoints;
     }
@@ -20,8 +24,14 @@ public static class ShiftReportEndpoints
     private static async Task<IResult> CreateWorkShiftReport([FromForm] CreateWorkShiftReportBody body, [FromServices] IMediator mediator)
     {
         await using var stream = body.Image.OpenReadStream();
-        await mediator.SendCommandAsync(new CreateShiftReportCommand(stream, body.KilometersDriven, body.CardTransactionsSum, body.Image.FileName, body.ShiftDay ,body.CarId));
+        await mediator.SendCommandAsync(new CreateShiftReportCommand(stream, body.KilometersDriven, body.CardTransactionsSum, body.Image.FileName, body.ShiftDate, body.CarId));
         return Results.NoContent();
+    }
+
+    private static async Task<IResult> GetTeamReportsInPeriod([FromQuery] DateTime sinceWhen, [FromQuery] DateTime untilWhen, [FromQuery] Guid teamId, [FromServices] IMediator mediator)
+    {
+        var results = await mediator.SendQueryAsync(new GetTeamReportsInPeriodQuery(sinceWhen, untilWhen, teamId));
+        return Results.Ok(results);
     }
 
     private record CreateWorkShiftReportBody
@@ -29,7 +39,7 @@ public static class ShiftReportEndpoints
         public IFormFile Image { get; init; }
         public int KilometersDriven { get; init; }
         public float CardTransactionsSum { get; init; }
-        public DateTime ShiftDay { get; init; }
+        public DateTime ShiftDate { get; init; }
         public Guid? CarId { get; init; } = null;
     }
 }
