@@ -1,6 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Car,
+  Gauge,
+  CreditCard,
+  ChevronDown,
+  Calendar,
+  Calendar1,
+  CalendarCheck,
+} from "lucide-react";
+
 import CameraCapture from "../components/CameraCapture";
 import { createShiftReport } from "../actions/shiftReport";
 
@@ -15,7 +25,7 @@ export default function CreateReportPage() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -32,28 +42,29 @@ export default function CreateReportPage() {
       const data = new FormData();
 
       if (imageBlob) {
-        data.append("image", imageBlob, "odometer.jpg");
+        data.append("Image", imageBlob, "odometer.jpg");
       }
 
       const kilometers = formElements.get("kilometers");
-      data.append("kilometersDriven", kilometers ? String(kilometers) : "0");
+      data.append("KilometersDriven", kilometers ? String(kilometers) : "0");
 
       const cashless = String(formElements.get("cashlessTransactions")).replace(
         ",",
         ".",
       );
-      data.append("cardTransactionsSum", cashless);
+      data.append("CardTransactionsSum", cashless);
 
-      data.append("shiftDay", new Date().toISOString());
+      const date = formElements.get("date");
+      data.append("ShiftDate", date ? String(date) : new Date().toISOString());
 
       const carIdValue = formElements.get("carId");
       if (carIdValue && carIdValue !== "") {
-        data.append("carId", String(carIdValue));
+        data.append("CarId", String(carIdValue));
       }
 
       await createShiftReport(data);
     } catch (error: any) {
-      console.log(error);
+      console.error("Błąd po stronie klienta:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -80,20 +91,7 @@ export default function CreateReportPage() {
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-gray-500 pointer-events-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125v-3.02M14.25 18.75v-3m-7.5-1.5h13.5m-16.5 0h3m-3 0a1.125 1.125 0 0 1-1.125-1.125V10.5a3.75 3.75 0 0 1 3.75-3.75h10.5a3.75 3.75 0 0 1 3.75 3.75v2.25c0 .621-.504 1.125-1.125 1.125h-1.5m-.75-3h-3.75m0 0v-3m-3.75 3H7.5m3 0v-3"
-                  />
-                </svg>
+                <Car className="w-5 h-5" />
               </span>
               <select
                 name="carId"
@@ -112,20 +110,7 @@ export default function CreateReportPage() {
                 ))}
               </select>
               <span className="absolute right-3 text-gray-500 pointer-events-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
+                <ChevronDown className="w-4 h-4" />
               </span>
             </div>
           </div>
@@ -144,25 +129,7 @@ export default function CreateReportPage() {
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-gray-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.3 16.2c-1.396 1.157-3.204 1.8-5.3 1.8a9.96 9.96 0 0 1-6.947-2.833M17.25 15.75l1.5 1.5M19.5 10.5a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.5 6.75a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z"
-                  />
-                </svg>
+                <Gauge className="w-5 h-5" />
               </span>
               <input
                 type="number"
@@ -182,24 +149,32 @@ export default function CreateReportPage() {
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-gray-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
-                  />
-                </svg>
+                <CreditCard className="w-5 h-5" />
               </span>
               <input
                 type="number"
                 name="cashlessTransactions"
+                required
+                min="0"
+                step="0.01"
+                suppressHydrationWarning
+                placeholder="0.00"
+                className="w-full border-2 border-black rounded-sm py-2.5 pl-10 pr-4 text-sm font-medium placeholder-gray-400 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className="text-xs font-black uppercase tracking-wider mb-2">
+              Data
+            </label>
+            <div className="relative flex items-center">
+              <span className="absolute left-3 text-gray-500">
+                <CalendarCheck className="w-5 h-5" />
+              </span>
+              <input
+                type="date"
+                name="date"
                 required
                 min="0"
                 step="0.01"
