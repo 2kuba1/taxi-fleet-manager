@@ -11,6 +11,7 @@ import {
 
 import CameraCapture from "../../components/CameraCapture";
 import { createShiftReport } from "../../actions/shiftReport";
+import Navbar from "@/app/components/Navbar";
 
 const CARS = [
   { id: "1", brand: "Toyota", model: "Corola" },
@@ -75,7 +76,7 @@ export default function CreateReportPage() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-start font-sans p-4 bg-[#F8F9FA] text-black">
-      <main className="flex flex-col w-full max-w-100 mt-6">
+      <main className="flex flex-col w-full max-w-100 mt-6 pb-24">
         <h1 className="text-[#B30006] text-2xl font-black uppercase tracking-tight">
           Zakończenie zmiany
         </h1>
@@ -194,6 +195,8 @@ export default function CreateReportPage() {
           </button>
         </form>
       </main>
+
+      <Navbar />
     </div>
   );
 }
