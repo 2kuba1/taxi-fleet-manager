@@ -5,11 +5,12 @@ import { useState } from "react";
 import axios from "axios";
 import TokenResponse from "../interfaces/TokenResponse";
 import { MoonLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { setAuthCookies } from "../actions/auth";
 
-export default function Home() {
+export default function HomePage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const resetSuccess = searchParams.get("reset-success");
 
   const [login, setLogin] = useState("");
@@ -58,6 +59,7 @@ export default function Home() {
         },
       );
       await setAuthCookies(response.data as TokenResponse);
+      router.push("/profile");
       console.log(response);
     } catch (error) {
       console.log(error);
